@@ -112,6 +112,7 @@ void kolor(int n){
 		case 5 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN); break;};
 		case 6 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_BLUE |BACKGROUND_BLUE | BACKGROUND_GREEN); break;};
 		case 7 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE); break;};
+		default: {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);};
 	}
 }
 
@@ -151,30 +152,32 @@ void wykres(double czas_troj, int troj, double czas_kwad, int kwad, double czas_
 	cout<<"\n\t\t0s\t\t\t\t\t4s\n(Podzialka: | - 0,1s)\n";
 }
 
+////
 
 
 int main(){
-	int czas_start=time(0), czas_pyt, kol, wyb, ok=0, nok=0, ile_pytan=0, ile, max, min, tr=0, kw=0, ro=0, ko=0;
+	int kol, wyb, ok=0, nok=0, ile_pytan=0, tr=0, kw=0, ro=0, ko=0;
 	char litera, odp;
-	double wyniki[100][3]; //do zmiany
+	double wyniki[100][3], czas_start=clock()/1000, czas_pyt, max, min; //do zmiany wielkosc tablicy
 	double pr, czas_tr=0, czas_kw=0, czas_ro=0, czas_ko=0;
 	
 	cout<<"\tTEST BADAJACY SZYBKOSC REAKCJI.\n\nZostana wyswietlone figury. Zadanie polega na jak najszybszym\nwprowadzeniu litery odpowiadajacej figurze."<<endl;
 	cout<<"Na kazda odpowiedz przeznaczone sa 4 sekundy. \nJesli odpowiedz nie padnie po tym czasie, zostanie uznana za zla.\nTrojkat - w\nKwadrat - s\nRomb - a\nKolo - d\n\nAby zaczac test wcisnij dowolny klawisz.";
 	getch();
 	system("cls");
-	srand(time(0));
+	srand(clock()/1000);
 	
-	int pozostaly_czas=60;
+	double pozostaly_czas=60;
 	
 	while(pozostaly_czas>0)
 	{
-		cout<<"Pozostaly czas testu: "<<pozostaly_czas<<"s.\n\n";
 		ile_pytan++;
-		czas_pyt=time(0);
+		czas_pyt=clock()/1000;
 		wyb=1+rand()%4; //losowanie figury
 		kol=1+rand()%7; //losowanie koloru
 		kolor(kol);		//ustawianie koloru
+		system("cls");
+		cout<<"Pozostaly czas testu: "<<pozostaly_czas<<"s.\n\n";
 		cout<<ile_pytan<<")\tTrojkat - w\tKwadrat - s\tRomb - a\tKolo - d\n";
 		
 		litera=zamiana(wyb);	//ustalanie odpowiedzi (litery) dla wylosowanej figury
@@ -192,21 +195,20 @@ int main(){
 			Sleep(10);
 			timer-=10;
 		};
-		ile=ile_pytan;
 		
 		wyniki[ile_pytan-1][2]=wyb;
 		
-		if (difftime(time(0), czas_pyt)<=4)	wyniki[ile_pytan-1][0]=difftime(time(0), czas_pyt); else wyniki[ile_pytan-1][0]=4;
+		if (difftime(clock()/1000, czas_pyt)<=4)	wyniki[ile_pytan-1][0]=difftime(clock()/1000, czas_pyt); else wyniki[ile_pytan-1][0]=4;
 		pozostaly_czas=pozostaly_czas-wyniki[ile_pytan-1][0];
 		if (wyniki[ile_pytan-1][0]>=4) {nok++; cout<<"Za pozno!"; wyniki[ile_pytan-1][1]=0;} else
 		{ 
 			if (odp!=litera) {cout<<"ZLA ODPOWIEDZ!\n\n"; nok++; wyniki[ile_pytan-1][1]=0;}
 			else {cout<<"DOBRA ODPOWIEDZ!\n\n"; ok++; wyniki[ile_pytan-1][1]=1;};
 		};
-		system("cls");
 	}
 
-	
+	kolor(-1);
+	system("cls");
 	cout<<"Liczba dobrych odpowiedzi: "<<ok<<endl;
 	cout<<"Liczba zlych odpowiedzi: "<<nok<<endl;
 	cout<<"Ilosc pytan: "<<ile_pytan<<endl;
@@ -215,8 +217,7 @@ int main(){
 	cout<<"Tabela wynikow poszczegolnych pytan:\n\n";
 	cout<<"Pytanie\t|\tCzas\t|\tOdpowiedz  |\tFigura";
 	cout<<"\n________________________________________________________";
-	max=0;
-	min=0;
+	
 	for(int i=0; i<ile_pytan; i++)
 	{
 		cout<<"\n"<<i+1<<")\t|\t"<<wyniki[i][0]<<" s\t|\t";
@@ -229,6 +230,9 @@ int main(){
 		}
 		cout<<"\n--------------------------------------------------------";
 	};
+	
+	max=wyniki[0][0];
+	min=wyniki[0][0];
 	
 	for (int i=0; i<ile_pytan-1; i++)
 	{
