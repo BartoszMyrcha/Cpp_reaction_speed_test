@@ -7,7 +7,8 @@
 using namespace std;
 
 
-void trojkat(int sp=20, int zn=1){
+void trojkat(){
+	int sp=20, zn=1;
 	for(int i=0; i<20; i++)
 	{
 		cout<<"\t\t";
@@ -25,7 +26,7 @@ void trojkat(int sp=20, int zn=1){
 }
 
 
-void kwadrat(void){
+void kwadrat(){
 	for (int i=0; i<20; i++)
 	{
 		cout<<"\t\t";
@@ -37,7 +38,7 @@ void kwadrat(void){
 }
 
 
-void romb(void){
+void romb(){
 	int sp=10, zn=1;
 	for(int i=0; i<10; i++)
 	{
@@ -77,7 +78,7 @@ void romb(void){
 	}
 }
 
-void kolo(void){
+void kolo(){
 	for (int y = 0; y < 20; y++ )
 	{
 		cout<<"\t\t\t";
@@ -153,9 +154,9 @@ void wykres(double czas_troj, int troj, double czas_kwad, int kwad, double czas_
 
 
 int main(){
-	int czas_start=time(0), czas_pyt, kol, wyb, ok=0, nok=0, ile_pytan=0, pozostaly_czas, ile, max, min, tr=0, kw=0, ro=0, ko=0;
+	int czas_start=time(0), czas_pyt, kol, wyb, ok=0, nok=0, ile_pytan=0, ile, max, min, tr=0, kw=0, ro=0, ko=0;
 	char litera, odp;
-	int wyniki[100][3];
+	double wyniki[100][3]; //do zmiany
 	double pr, czas_tr=0, czas_kw=0, czas_ro=0, czas_ko=0;
 	
 	cout<<"\tTEST BADAJACY SZYBKOSC REAKCJI.\n\nZostana wyswietlone figury. Zadanie polega na jak najszybszym\nwprowadzeniu litery odpowiadajacej figurze."<<endl;
@@ -164,17 +165,19 @@ int main(){
 	system("cls");
 	srand(time(0));
 	
-	pozostaly_czas=60;
+	int pozostaly_czas=60;
+	
 	while(pozostaly_czas>0)
 	{
 		cout<<"Pozostaly czas testu: "<<pozostaly_czas<<"s.\n\n";
 		ile_pytan++;
 		czas_pyt=time(0);
-		wyb=1+rand()%4;
+		wyb=1+rand()%4; //losowanie figury
+		kol=1+rand()%7; //losowanie koloru
+		kolor(kol);		//ustawianie koloru
 		cout<<ile_pytan<<")\tTrojkat - w\tKwadrat - s\tRomb - a\tKolo - d\n";
-		kol=1+rand()%7;
-		kolor(kol);
-		litera=zamiana(wyb);
+		
+		litera=zamiana(wyb);	//ustalanie odpowiedzi (litery) dla wylosowanej figury
 		cout<<"\nCzas pozostaly na odpowiedz: ";
 	
 		int timer=4000;
@@ -212,13 +215,13 @@ int main(){
 	cout<<"Tabela wynikow poszczegolnych pytan:\n\n";
 	cout<<"Pytanie\t|\tCzas\t|\tOdpowiedz  |\tFigura";
 	cout<<"\n________________________________________________________";
-	max=wyniki[0][0];
-	min=wyniki[0][0];
+	max=0;
+	min=0;
 	for(int i=0; i<ile_pytan; i++)
 	{
 		cout<<"\n"<<i+1<<")\t|\t"<<wyniki[i][0]<<" s\t|\t";
 		if (wyniki[i][1]==1) cout<<"DOBRA\t|\t"; else cout<<"ZLA\t|\t";
-		switch(wyniki[i][2]){
+		switch((int)wyniki[i][2]){
 			case 1 : {cout<<"Trojkat"; tr++; czas_tr+=wyniki[i][0]; break;}
 			case 2 : {cout<<"Kwadrat"; kw++; czas_kw+=wyniki[i][0]; break;}
 			case 3 : {cout<<"Romb"; ro++; czas_ro+=wyniki[i][0]; break;}
