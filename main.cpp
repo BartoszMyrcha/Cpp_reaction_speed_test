@@ -158,21 +158,21 @@ void wykres(double czas_troj, int troj, double czas_kwad, int kwad, double czas_
 int main(){
 	int kol, wyb, ok=0, nok=0, ile_pytan=0, tr=0, kw=0, ro=0, ko=0;
 	char litera, odp;
-	double wyniki[100][3], czas_start=clock()/1000, czas_pyt, max, min; //do zmiany wielkosc tablicy
+	double wyniki[100][3], czas_start=clock(), czas_pyt, max, min; //do zmiany wielkosc tablicy
 	double pr, czas_tr=0, czas_kw=0, czas_ro=0, czas_ko=0;
 	
 	cout<<"\tTEST BADAJACY SZYBKOSC REAKCJI.\n\nZostana wyswietlone figury. Zadanie polega na jak najszybszym\nwprowadzeniu litery odpowiadajacej figurze."<<endl;
 	cout<<"Na kazda odpowiedz przeznaczone sa 4 sekundy. \nJesli odpowiedz nie padnie po tym czasie, zostanie uznana za zla.\nTrojkat - w\nKwadrat - s\nRomb - a\nKolo - d\n\nAby zaczac test wcisnij dowolny klawisz.";
 	getch();
 	system("cls");
-	srand(clock()/1000);
+	srand(clock());
 	
 	double pozostaly_czas=60;
 	
 	while(pozostaly_czas>0)
 	{
 		ile_pytan++;
-		czas_pyt=clock()/1000;
+		czas_pyt=clock();
 		wyb=1+rand()%4; //losowanie figury
 		kol=1+rand()%7; //losowanie koloru
 		kolor(kol);		//ustawianie koloru
@@ -198,7 +198,7 @@ int main(){
 		
 		wyniki[ile_pytan-1][2]=wyb;
 		
-		if (difftime(clock()/1000, czas_pyt)<=4)	wyniki[ile_pytan-1][0]=difftime(clock()/1000, czas_pyt); else wyniki[ile_pytan-1][0]=4;
+		if (difftime(clock(), czas_pyt)/1000<=4)	wyniki[ile_pytan-1][0]=difftime(clock(), czas_pyt)/1000; else wyniki[ile_pytan-1][0]=4;
 		pozostaly_czas=pozostaly_czas-wyniki[ile_pytan-1][0];
 		if (wyniki[ile_pytan-1][0]>=4) {nok++; cout<<"Za pozno!"; wyniki[ile_pytan-1][1]=0;} else
 		{ 
