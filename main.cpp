@@ -6,6 +6,12 @@
 #include <windows.h>
 using namespace std;
 
+struct wynik
+{
+	double czas_odp;
+	bool poprawnosc;
+	int figura;
+}
 
 void trojkat(){
 	int sp=20, zn=1;
