@@ -9,8 +9,64 @@ using namespace std;
 struct wynik
 {
 	double czas_odp;
-	bool poprawnosc;
+	int poprawnosc;
 	int figura;
+	wynik* nastepny;
+	wynik();
+};
+
+wynik::wynik()	{
+	nastepny=0;
+}
+
+struct lista {
+    wynik* pierw;
+    void dodaj_wynik (double czas_odp, int poprawnosc, int figura);
+    void wyswietl_liste ();
+    lista();
+};
+
+lista::lista() {
+    pierw = 0;
+}
+
+
+void lista::dodaj_wynik(double czas_odp, int poprawnosc, int figura)
+{
+    wynik *nowy = new wynik;
+
+    nowy->czas_odp = czas_odp;
+    nowy->poprawnosc = poprawnosc;
+    nowy->figura = figura;
+ 
+    if (pierw==0)
+    {
+        pierw = nowy;
+    }
+ 
+    else
+    {
+        wynik *temp = pierw;
+ 
+        while (temp->nastepny)
+        {
+            temp = temp->nastepny;
+        }
+ 
+        temp->nastepny = nowy;
+        nowy->nastepny = 0; 
+    }
+}
+
+void lista::wyswietl_liste()
+{
+    wynik *temp = pierw;
+ 
+    while (temp)
+    {
+        cout << "imie: " << temp->czas_odp<<endl;
+        temp=temp->nastepny;
+    }
 }
 
 void trojkat(){
@@ -164,8 +220,10 @@ void wykres(double czas_troj, int troj, double czas_kwad, int kwad, double czas_
 int main(){
 	int kol, wyb, ok=0, nok=0, ile_pytan=0, tr=0, kw=0, ro=0, ko=0;
 	char litera, odp;
-	double wyniki[100][3], czas_start=clock(), czas_pyt, max, min; //do zmiany wielkosc tablicy
+	double wyniki_temp[3], czas_start=clock(), czas_pyt, max, min;
 	double pr, czas_tr=0, czas_kw=0, czas_ro=0, czas_ko=0;
+	
+	lista *wyniki = new lista;
 	
 	cout<<"\tTEST BADAJACY SZYBKOSC REAKCJI.\n\nZostana wyswietlone figury. Zadanie polega na jak najszybszym\nwprowadzeniu litery odpowiadajacej figurze."<<endl;
 	cout<<"Na kazda odpowiedz przeznaczone sa 4 sekundy. \nJesli odpowiedz nie padnie po tym czasie, zostanie uznana za zla.\nTrojkat - w\nKwadrat - s\nRomb - a\nKolo - d\n\nAby zaczac test wcisnij dowolny klawisz.";
@@ -202,15 +260,16 @@ int main(){
 			timer-=10;
 		};
 		
-		wyniki[ile_pytan-1][2]=wyb;
+		wyniki_temp[2]=wyb;
 		
-		if (difftime(clock(), czas_pyt)/1000<=4)	wyniki[ile_pytan-1][0]=difftime(clock(), czas_pyt)/1000; else wyniki[ile_pytan-1][0]=4;
-		pozostaly_czas=pozostaly_czas-wyniki[ile_pytan-1][0];
-		if (wyniki[ile_pytan-1][0]>=4) {nok++; cout<<"Za pozno!"; wyniki[ile_pytan-1][1]=0;} else
+		if (difftime(clock(), czas_pyt)/1000<=4)	wyniki_temp[0]=difftime(clock(), czas_pyt)/1000; else wyniki_temp[0]=4;
+		pozostaly_czas=pozostaly_czas-wyniki_temp[0];
+		if (wyniki_temp[0]>=4) {nok++; cout<<"Za pozno!"; wyniki_temp[1]=0;} else
 		{ 
-			if (odp!=litera) {cout<<"ZLA ODPOWIEDZ!\n\n"; nok++; wyniki[ile_pytan-1][1]=0;}
-			else {cout<<"DOBRA ODPOWIEDZ!\n\n"; ok++; wyniki[ile_pytan-1][1]=1;};
+			if (odp!=litera) {cout<<"ZLA ODPOWIEDZ!\n\n"; nok++; wyniki_temp[1]=0;}
+			else {cout<<"DOBRA ODPOWIEDZ!\n\n"; ok++; wyniki_temp[1]=1;};
 		};
+		wyniki->dodaj_wynik(wyniki_temp[0], wyniki_temp[1], wyniki_temp[2]);
 	}
 
 	kolor(-1);
@@ -224,27 +283,36 @@ int main(){
 	cout<<"Pytanie\t|\tCzas\t|\tOdpowiedz  |\tFigura";
 	cout<<"\n________________________________________________________";
 	
-	for(int i=0; i<ile_pytan; i++)
-	{
-		cout<<"\n"<<i+1<<")\t|\t"<<wyniki[i][0]<<" s\t|\t";
-		if (wyniki[i][1]==1) cout<<"DOBRA\t|\t"; else cout<<"ZLA\t|\t";
-		switch((int)wyniki[i][2]){
-			case 1 : {cout<<"Trojkat"; tr++; czas_tr+=wyniki[i][0]; break;}
-			case 2 : {cout<<"Kwadrat"; kw++; czas_kw+=wyniki[i][0]; break;}
-			case 3 : {cout<<"Romb"; ro++; czas_ro+=wyniki[i][0]; break;}
-			case 4 : {cout<<"Kolo"; ko++; czas_ko+=wyniki[i][0]; break;}
+	
+	max=wyniki_temp[0];
+	min=wyniki_temp[0];
+	
+	int i=1;
+	
+	wynik *temp = wyniki->pierw;
+ 
+    while (temp)
+    {
+        cout<<"\n"<<i<<")\t|\t"<<temp->czas_odp<<" s\t|\t";
+        if (temp->poprawnosc==1) cout<<"DOBRA\t|\t"; else cout<<"ZLA\t|\t";
+		switch(temp->figura){
+			case 1 : {cout<<"Trojkat"; tr++; czas_tr+=temp->czas_odp; break;}
+			case 2 : {cout<<"Kwadrat"; kw++; czas_kw+=temp->czas_odp; break;}
+			case 3 : {cout<<"Romb"; ro++; czas_ro+=temp->czas_odp; break;}
+			case 4 : {cout<<"Kolo"; ko++; czas_ko+=temp->czas_odp; break;}
 		}
 		cout<<"\n--------------------------------------------------------";
-	};
-	
-	max=wyniki[0][0];
-	min=wyniki[0][0];
-	
-	for (int i=0; i<ile_pytan-1; i++)
-	{
-		if (wyniki[i+1][0]>max) max=wyniki[i+1][0];
-		if (wyniki[i+1][0]<min) min=wyniki[i+1][0];
-	}
+		
+		if (temp->czas_odp>max) max=temp->czas_odp;
+		if (temp->czas_odp<min) min=temp->czas_odp;
+        
+        
+        temp=temp->nastepny;
+        
+        i++;
+    }
+    
+    delete wyniki;
 	
 	cout<<"\nNajkrotszy czas rozpoznawania: "<<min<<"s";
 	cout<<"\nNajdluzszy czas rozpoznawania: "<<max<<"s";
