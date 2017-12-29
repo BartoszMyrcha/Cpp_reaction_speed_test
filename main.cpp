@@ -69,156 +69,19 @@ void lista::wyswietl_liste()
     }
 }
 
-void trojkat(){
-	int sp=20, zn=1;
-	for(int i=0; i<20; i++)
-	{
-		cout<<"\t\t";
-	    for(int j=0; j<sp; j++)
-			cout<<" ";
-		for(int k=0; k<zn; k++)
-			cout<<"#";
-		for(int l=0; l<sp; l++)
-			cout<<" ";
-		cout<<"\t\t";
-		cout<<"\n";
-		sp--;
-		zn+=2;
-	}
-}
-
-
-void kwadrat(){
-	for (int i=0; i<20; i++)
-	{
-		cout<<"\t\t";
-		for (int j=0; j<20; j++)
-			cout<<"##";
-		cout<<"\t\t";
-		cout<<endl;
-	}
-}
-
-
-void romb(){
-	int sp=10, zn=1;
-	for(int i=0; i<10; i++)
-	{
-		cout<<"\t\t\t";
-	    for(int k=0; k<sp; k++)
-			cout<<" ";
-		for(int l=0; l<zn; l++)
-			cout<<"#";
-		for(int m=0; m<sp; m++)
-			cout<<" ";
-		cout<<"\t\t\t\t";
-		cout<<"\n";
-		sp--;
-		zn+=2;
-	}
-	sp=1;
-	zn=19;
-	cout<<"\t\t\t";
-	for (int i=0; i<21; i++)
-		cout<<"#";
-	cout<<"\t\t\t\t";
-	cout<<"\n";
-	
-	for(int i=0; i<10; i++)
-	{
-		cout<<"\t\t\t";
-	    for(int k=sp; k>0; k--)
-			cout<<" ";
-		for(int l=zn; l>0; l--)
-			cout<<"#";
-		for(int m=sp; m>0; m--)
-			cout<<" ";
-		cout<<"\t\t\t\t";
-		cout<<"\n";
-		sp++;
-		zn-=2;
-	}
-}
-
-void kolo(){
-	for (int y = 0; y < 20; y++ )
-	{
-		cout<<"\t\t\t";
-		for (int x = 0; x < 20; x++)
-			if ( (y-10)*(y-10) + (x-10)*(x-10) < 50 ) cout<<"#"; else	cout<<" ";
-		cout<<"\t\t\t";
-		cout <<endl;
-	}
-}
-
-
-char zamiana(int n){
-	char l;
-	switch(n){
-			case 1 : {trojkat(); l='w';	break;}
-			case 2 : {kwadrat(); l='s';	break;}
-			case 3 : {romb(); l='a';	break;}
-			case 4 : {kolo(); l='d';  break;}
-		}
-	return l;
-}
-
-void kolor(int n){
-	HANDLE uchwyt = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	switch (n){
-		case 1 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE); break;};
-		case 2 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | BACKGROUND_BLUE); break;};
-		case 3 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_BLUE | BACKGROUND_GREEN); break;};
-		case 4 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_BLUE | BACKGROUND_RED); break;};
-		case 5 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN); break;};
-		case 6 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_BLUE |BACKGROUND_BLUE | BACKGROUND_GREEN); break;};
-		case 7 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE); break;};
-		default: {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);};
-	}
-}
-
-
-void wykres(double czas_troj, int troj, double czas_kwad, int kwad, double czas_romb, int romb, double czas_kolo, int kolo){
-	double sr_tr, sr_kw, sr_ro, sr_ko;
-	sr_tr=czas_troj/troj;
-	sr_kw=czas_kwad/kwad;
-	sr_ro=czas_romb/romb;
-	sr_ko=czas_kolo/kolo;
-/*	cout<<"\n\nTrojkat: "<<czas_troj<<"s ,"<<troj<<" sr: "<<sr_tr;
-	cout<<"\nKwadrat: "<<czas_kwad<<"s ,"<<kwad<<" sr: "<<sr_kw;
-	cout<<"\nRomb: "<<czas_romb<<"s ,"<<romb<<" sr: "<<sr_ro;
-	cout<<"\nKolo: "<<czas_kolo<<"s ,"<<kolo<<" sr: "<<sr_ko;		*/
-	cout<<"\n\n\nWYKRES SLUPKOWY";
-	cout<<"\n\nTrojkat: \t";
-	while(sr_tr>0.099){
-		cout<<"|";
-		sr_tr-=0.1;
-	}
-	cout<<"\n\nKwadrat: \t";
-	while(sr_kw>0.099){
-		cout<<"|";
-		sr_kw-=0.1;
-	}
-	cout<<"\n\nRomb:    \t";
-	while(sr_ro>0.099){
-		cout<<"|";
-		sr_ro-=0.1;
-	}
-	cout<<"\n\nKolo:    \t";
-	while(sr_ko>0.099){
-		cout<<"|";
-		sr_ko-=0.1;
-	}
-	cout<<"\n\t\t----------------------------------------";
-	cout<<"\n\t\t0s\t\t\t\t\t4s\n(Podzialka: | - 0,1s)\n";
-}
+void trojkat(char);
+void kwadrat(char);
+void romb(char);
+void kolo(char);
+char zamiana(int, int);
+void kolor(int);
+void wykres(double, int, double, int, double, int, double, int);
 
 ////
 
 
 int main(){
-	int kol, wyb, ok=0, nok=0, ile_pytan=0, tr=0, kw=0, ro=0, ko=0;
+	int kol, wyb, znak_int, ok=0, nok=0, ile_pytan=0, tr=0, kw=0, ro=0, ko=0;
 	char litera, odp;
 	double wyniki_temp[3], czas_start=clock(), czas_pyt, max, min;
 	double pr, czas_tr=0, czas_kw=0, czas_ro=0, czas_ko=0;
@@ -238,13 +101,14 @@ int main(){
 		ile_pytan++;
 		czas_pyt=clock();
 		wyb=1+rand()%4; //losowanie figury
+		znak_int=1+rand()%4; //losowanie znaku
 		kol=1+rand()%7; //losowanie koloru
 		kolor(kol);		//ustawianie koloru
 		system("cls");
 		cout<<"Pozostaly czas testu: "<<pozostaly_czas<<"s.\n\n";
 		cout<<ile_pytan<<")\tTrojkat - w\tKwadrat - s\tRomb - a\tKolo - d\n";
 		
-		litera=zamiana(wyb);	//ustalanie odpowiedzi (litery) dla wylosowanej figury
+		litera=zamiana(wyb, znak_int);	//ustalanie odpowiedzi (litery) dla wylosowanej figury oraz zdefiniowanie znaku
 		cout<<"\nCzas pozostaly na odpowiedz: ";
 	
 		int timer=4000;
@@ -323,3 +187,157 @@ int main(){
 	system("PAUSE");
 	return 0;
 }
+
+/* FUNKCJE */
+void trojkat(char znak){
+	int sp=20, zn=1;
+	for(int i=0; i<20; i++)
+	{
+		cout<<"\t\t";
+	    for(int j=0; j<sp; j++)
+			cout<<" ";
+		for(int k=0; k<zn; k++)
+			cout<<znak;
+		for(int l=0; l<sp; l++)
+			cout<<" ";
+		cout<<"\t\t";
+		cout<<"\n";
+		sp--;
+		zn+=2;
+	}
+}
+
+
+void kwadrat(char znak){
+	for (int i=0; i<20; i++)
+	{
+		cout<<"\t\t";
+		for (int j=0; j<20; j++)
+			cout<<znak<<znak;
+		cout<<"\t\t";
+		cout<<endl;
+	}
+}
+
+
+void romb(char znak){
+	int sp=10, zn=1;
+	for(int i=0; i<10; i++)
+	{
+		cout<<"\t\t\t";
+	    for(int k=0; k<sp; k++)
+			cout<<" ";
+		for(int l=0; l<zn; l++)
+			cout<<znak;
+		for(int m=0; m<sp; m++)
+			cout<<" ";
+		cout<<"\t\t\t\t";
+		cout<<"\n";
+		sp--;
+		zn+=2;
+	}
+	sp=1;
+	zn=19;
+	cout<<"\t\t\t";
+	for (int i=0; i<21; i++)
+		cout<<znak;
+	cout<<"\t\t\t\t";
+	cout<<"\n";
+	
+	for(int i=0; i<10; i++)
+	{
+		cout<<"\t\t\t";
+	    for(int k=sp; k>0; k--)
+			cout<<" ";
+		for(int l=zn; l>0; l--)
+			cout<<znak;
+		for(int m=sp; m>0; m--)
+			cout<<" ";
+		cout<<"\t\t\t\t";
+		cout<<"\n";
+		sp++;
+		zn-=2;
+	}
+}
+
+void kolo(char znak){
+	for (int y = 0; y < 20; y++ )
+	{
+		cout<<"\t\t\t";
+		for (int x = 0; x < 20; x++)
+			if ( (y-10)*(y-10) + (x-10)*(x-10) < 50 ) cout<<znak; else	cout<<" ";
+		cout<<"\t\t\t";
+		cout <<endl;
+	}
+}
+
+
+char zamiana(int n, int znak_int){
+	char l, znak;
+	switch(znak_int)
+	{
+		case 1 : {znak='@'; break;}
+		case 2 : {znak='#'; break;}
+		case 3 : {znak='$'; break;}
+		case 4 : {znak='*';	break;}
+	}
+	switch(n){
+			case 1 : {trojkat(znak); l='w';	break;}
+			case 2 : {kwadrat(znak); l='s';	break;}
+			case 3 : {romb(znak); l='a';	break;}
+			case 4 : {kolo(znak); l='d';  break;}
+		}
+	return l;
+}
+
+void kolor(int n){
+	HANDLE uchwyt = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	switch (n){
+		case 1 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE); break;};
+		case 2 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | BACKGROUND_BLUE); break;};
+		case 3 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_BLUE | BACKGROUND_GREEN); break;};
+		case 4 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_BLUE | BACKGROUND_RED); break;};
+		case 5 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN); break;};
+		case 6 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_BLUE |BACKGROUND_BLUE | BACKGROUND_GREEN); break;};
+		case 7 : {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_GREEN | BACKGROUND_RED | BACKGROUND_BLUE); break;};
+		default: {SetConsoleTextAttribute(uchwyt, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);};
+	}
+}
+
+
+void wykres(double czas_troj, int troj, double czas_kwad, int kwad, double czas_romb, int romb, double czas_kolo, int kolo){
+	double sr_tr, sr_kw, sr_ro, sr_ko;
+	sr_tr=czas_troj/troj;
+	sr_kw=czas_kwad/kwad;
+	sr_ro=czas_romb/romb;
+	sr_ko=czas_kolo/kolo;
+/*	cout<<"\n\nTrojkat: "<<czas_troj<<"s ,"<<troj<<" sr: "<<sr_tr;
+	cout<<"\nKwadrat: "<<czas_kwad<<"s ,"<<kwad<<" sr: "<<sr_kw;
+	cout<<"\nRomb: "<<czas_romb<<"s ,"<<romb<<" sr: "<<sr_ro;
+	cout<<"\nKolo: "<<czas_kolo<<"s ,"<<kolo<<" sr: "<<sr_ko;		*/
+	cout<<"\n\n\nWYKRES SLUPKOWY";
+	cout<<"\n\nTrojkat: \t";
+	while(sr_tr>0.099){
+		cout<<"|";
+		sr_tr-=0.1;
+	}
+	cout<<"\n\nKwadrat: \t";
+	while(sr_kw>0.099){
+		cout<<"|";
+		sr_kw-=0.1;
+	}
+	cout<<"\n\nRomb:    \t";
+	while(sr_ro>0.099){
+		cout<<"|";
+		sr_ro-=0.1;
+	}
+	cout<<"\n\nKolo:    \t";
+	while(sr_ko>0.099){
+		cout<<"|";
+		sr_ko-=0.1;
+	}
+	cout<<"\n\t\t----------------------------------------";
+	cout<<"\n\t\t0s\t\t\t\t\t4s\n(Podzialka: | - 0,1s)\n";
+}
+
